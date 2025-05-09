@@ -1,0 +1,9 @@
+{
+	"name": "azdf-kb01",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e8cb5c9e-a02c-412e-a8df-05b1cf9ffbfe",
+		"tenantId": "2f81442d-c401-4406-83ca-67f586cc99f7"
+	}
+}

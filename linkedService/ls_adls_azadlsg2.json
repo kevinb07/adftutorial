@@ -1,0 +1,17 @@
+{
+	"name": "ls_adls_azadlsg2",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"containerName": {
+				"type": "string",
+				"defaultValue": "raw"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://azadlsg2.dfs.core.windows.net/"
+		}
+	}
+}
