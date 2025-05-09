@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup ECDC File List",
+				"name": "Lookup ECDC File List All",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -29,7 +29,8 @@
 					"dataset": {
 						"referenceName": "ds_ecdc_file_list_all",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -37,7 +38,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup ECDC File List",
+						"activity": "Lookup ECDC File List All",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -46,12 +47,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup ECDC File List').output.value",
+						"value": "@activity('Lookup ECDC File List All').output.value",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "Copy ECDC Data_copy1",
+							"name": "Copy ECDC Data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -112,14 +113,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_ecdc_raw_csv_adls_param",
-									"type": "DatasetReference",
-									"parameters": {
-										"fileName": {
-											"value": "@item().sinkFileName",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "ds_cases_deaths_raw_csv_adls",
+									"type": "DatasetReference"
 								}
 							]
 						}
