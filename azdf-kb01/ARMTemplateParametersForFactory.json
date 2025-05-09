@@ -12,7 +12,7 @@
 			"value": "https://azadlsg2.dfs.core.windows.net/"
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
-			"value": "https://github.com"
+			"value": "@{linkedService().sourceBaseURL}"
 		},
 		"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
 			"value": "cloudboxacademy/covid19/blob/main/ecdc_data/hospital_admissions.csv"
