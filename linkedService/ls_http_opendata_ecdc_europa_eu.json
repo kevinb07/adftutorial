@@ -3,8 +3,7 @@
 	"properties": {
 		"parameters": {
 			"sourceBaseURL": {
-				"type": "string",
-				"defaultValue": "https://github.com"
+				"type": "string"
 			}
 		},
 		"annotations": [],
