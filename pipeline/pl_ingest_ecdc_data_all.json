@@ -113,8 +113,14 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_cases_deaths_raw_csv_adls",
-									"type": "DatasetReference"
+									"referenceName": "ds_cases_deaths_raw_csv_adls_param",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@item().sinkFileName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
