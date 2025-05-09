@@ -72,13 +72,33 @@
 					},
 					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName": {
 						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "azdf-kb01_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"tr_ingest_population_data_properties_typeProperties_scope": {
 						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azdf-kb01_ArmTemplate_0')]"
+			]
 		}
 	]
 }
