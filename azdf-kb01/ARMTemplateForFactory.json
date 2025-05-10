@@ -1193,9 +1193,14 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "ds_cases_deaths_raw_csv_adls",
+											"referenceName": "ds_cases_deaths_raw_csv_adls_param",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"fileName": {
+													"value": "@item().sinkFileName",
+													"type": "Expression"
+												}
+											}
 										}
 									]
 								}
@@ -1221,7 +1226,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_ecdc_file_list_all')]",
 				"[concat(variables('factoryId'), '/datasets/ds_cases_deaths_raw_csv_http_param')]",
-				"[concat(variables('factoryId'), '/datasets/ds_cases_deaths_raw_csv_adls')]"
+				"[concat(variables('factoryId'), '/datasets/ds_cases_deaths_raw_csv_adls_param')]"
 			]
 		},
 		{
