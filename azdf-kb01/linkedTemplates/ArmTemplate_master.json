@@ -66,12 +66,6 @@
 					},
 					"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 						"value": "[parameters('ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url')]"
-					},
-					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
-						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL')]"
-					},
-					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName": {
-						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName')]"
 					}
 				}
 			},
@@ -90,6 +84,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
+						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL')]"
+					},
+					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName": {
+						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName')]"
 					},
 					"tr_ingest_population_data_properties_typeProperties_scope": {
 						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
