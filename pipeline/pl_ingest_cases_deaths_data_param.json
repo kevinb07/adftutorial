@@ -78,13 +78,16 @@
 		],
 		"parameters": {
 			"sourceRelativeURL": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "cloudboxacademy/covid19/tree/main/ecdc_data/hospital_admissions.csv"
 			},
 			"sinkFileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "hospital_admissions.csv"
 			},
 			"sourceBaseURL": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://github.com"
 			}
 		},
 		"variables": {
