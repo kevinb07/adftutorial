@@ -1168,12 +1168,6 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"parameters": {
-					"containerName": {
-						"type": "string",
-						"defaultValue": "raw"
-					}
-				},
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
@@ -1315,7 +1309,7 @@
 								"referenceName": "ds_country_lookup",
 								"type": "DatasetReference"
 							},
-							"name": "countryLookup"
+							"name": "CountryLookup"
 						}
 					],
 					"sinks": [
@@ -1368,7 +1362,7 @@
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> countryLookup",
+						"     ignoreNoFilesFound: false) ~> CountryLookup",
 						"CasesAndDeathsSource filter(continent == \"Europe\" && not(isNull(country_code))) ~> FilterEuropeOnly",
 						"FilterEuropeOnly select(mapColumn(",
 						"          country,",
@@ -1391,7 +1385,7 @@
 						"     count = sum(daily_count),",
 						"     columnNaming: '$V_$N',",
 						"     lateral: true) ~> PivotCounts",
-						"PivotCounts, countryLookup lookup(PivotCounts@country == countryLookup@country,",
+						"PivotCounts, CountryLookup lookup(PivotCounts@country == CountryLookup@country,",
 						"     multiple: false,",
 						"     pickup: 'any',",
 						"     broadcast: 'auto')~> LookupCountry",
@@ -1568,6 +1562,53 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_process_cases_and_deaths_data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_transform_cases_deaths",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_transform_cases_deaths",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CasesAndDeathsSource": {},
+									"CountryLookup": {},
+									"CasesAndDeathsSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_transform_cases_deaths')]"
 			]
 		}
 	]
