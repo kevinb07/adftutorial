@@ -3,10 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adls_azadlsg2",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"containerName": "raw"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
