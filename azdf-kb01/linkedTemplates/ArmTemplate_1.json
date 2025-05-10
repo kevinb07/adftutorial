@@ -182,13 +182,16 @@
 				},
 				"parameters": {
 					"sourceRelativeURL": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "cloudboxacademy/covid19/tree/main/ecdc_data/hospital_admissions.csv"
 					},
 					"sinkFileName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "hospital_admissions.csv"
 					},
 					"sourceBaseURL": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "https://github.com"
 					}
 				},
 				"variables": {
@@ -1122,99 +1125,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tr_ingest_ecdc_data')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_ingest_ecdc_data_all",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2025-05-09T01:05:00",
-						"timeZone": "GMT Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ingest_ecdc_data_all')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tr_ingest_hospital_admissions_data')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_ingest_ecdc_data_param",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"sourceRelativeURL": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL')]",
-							"sinkFileName": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2025-05-09T22:30:00",
-						"timeZone": "GMT Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ingest_ecdc_data_param')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tr_ingest_population_data')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_ingest_population_data",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/population/blobs/population_by_age.tsv.gz",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ingest_population_data')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pl_process_cases_and_deaths_data')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1308,6 +1218,99 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_transform_hospital_admissions')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_ingest_ecdc_data')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ingest_ecdc_data_all",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-05-09T01:05:00",
+						"timeZone": "GMT Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ingest_ecdc_data_all')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_ingest_hospital_admissions_data')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ingest_ecdc_data_param",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"sourceRelativeURL": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL')]",
+							"sinkFileName": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sinkFileName')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-05-09T22:30:00",
+						"timeZone": "GMT Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ingest_ecdc_data_param')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_ingest_population_data')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ingest_population_data",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/population/blobs/population_by_age.tsv.gz",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ingest_population_data')]"
 			]
 		}
 	]

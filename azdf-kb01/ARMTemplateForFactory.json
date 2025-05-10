@@ -197,13 +197,16 @@
 				},
 				"parameters": {
 					"sourceRelativeURL": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "cloudboxacademy/covid19/tree/main/ecdc_data/hospital_admissions.csv"
 					},
 					"sinkFileName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "hospital_admissions.csv"
 					},
 					"sourceBaseURL": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "https://github.com"
 					}
 				},
 				"variables": {
@@ -692,6 +695,102 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_process_cases_and_deaths_data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_transform_cases_deaths",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_transform_cases_deaths",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CasesAndDeathsSource": {},
+									"CountryLookup": {},
+									"CasesAndDeathsSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_transform_cases_deaths')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_process_hospital_admissions_data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_transform_hospital_admissions",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_transform_hospital_admissions",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"sourceHospitalAdmission": {},
+									"sourceCountry": {},
+									"sourceDimDate": {},
+									"sinkDaily": {},
+									"sinkWeekly": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_transform_hospital_admissions')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_test')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -790,10 +889,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "raw"
-					}
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -801,7 +897,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "cases_deaths.csv",
-						"folderPath": "ecdc",
+						"folderPath": "ecdc/cases_deaths",
 						"fileSystem": "raw"
 					},
 					"columnDelimiter": ",",
@@ -823,9 +919,7 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "raw"
-					}
+					"parameters": {}
 				},
 				"parameters": {
 					"fileName": {
@@ -862,7 +956,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_http_opendata_ecdc_europa_eu",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"sourceBaseURL": "https://github.com"
+					}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -924,6 +1021,162 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_http_opendata_ecdc_europa_eu')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_country_lookup')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "country_lookup.csv",
+						"folderPath": "dim_country",
+						"fileSystem": "lookup"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "country",
+						"type": "String"
+					},
+					{
+						"name": "country_code_2_digit",
+						"type": "String"
+					},
+					{
+						"name": "country_code_3_digit",
+						"type": "String"
+					},
+					{
+						"name": "continent",
+						"type": "String"
+					},
+					{
+						"name": "population",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_daily_hospital_admissions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "ecdc/hospitaladmissions/daily",
+						"fileSystem": "processed"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dim_date_lookup')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dim_date.csv",
+						"folderPath": "dim_date",
+						"fileSystem": "lookup"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "date_key",
+						"type": "String"
+					},
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "month",
+						"type": "String"
+					},
+					{
+						"name": "day",
+						"type": "String"
+					},
+					{
+						"name": "day_name",
+						"type": "String"
+					},
+					{
+						"name": "day_of_year",
+						"type": "String"
+					},
+					{
+						"name": "week_of_month",
+						"type": "String"
+					},
+					{
+						"name": "week_of_year",
+						"type": "String"
+					},
+					{
+						"name": "month_name",
+						"type": "String"
+					},
+					{
+						"name": "year_month",
+						"type": "String"
+					},
+					{
+						"name": "year_week",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
 			]
 		},
 		{
@@ -1007,10 +1260,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "raw"
-					}
+					"type": "LinkedServiceReference"
 				},
 				"parameters": {
 					"fileName": {
@@ -1118,10 +1368,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "raw"
-					}
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1133,6 +1380,186 @@
 						"fileSystem": "raw"
 					},
 					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_processed_cases_and_deaths')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "ecdc/cases_deaths",
+						"fileSystem": "processed"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_raw_cases_and_deaths')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "cases_deaths.csv",
+						"folderPath": "ecdc/cases_deaths",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "country",
+						"type": "String"
+					},
+					{
+						"name": "country_code",
+						"type": "String"
+					},
+					{
+						"name": "continent",
+						"type": "String"
+					},
+					{
+						"name": "population",
+						"type": "String"
+					},
+					{
+						"name": "indicator",
+						"type": "String"
+					},
+					{
+						"name": "daily_count",
+						"type": "String"
+					},
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "rate_14_day",
+						"type": "String"
+					},
+					{
+						"name": "source",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_raw_hospital_admission')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "hospital_admissions.csv",
+						"folderPath": "ecdc/hospital_admissions",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "country",
+						"type": "String"
+					},
+					{
+						"name": "indicator",
+						"type": "String"
+					},
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "year_week",
+						"type": "String"
+					},
+					{
+						"name": "value",
+						"type": "String"
+					},
+					{
+						"name": "source",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_weekly_hospital_admissions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_azadlsg2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "ecdc/hospitaladmissions/weekly",
+						"fileSystem": "processed"
+					},
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
@@ -1421,199 +1848,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_raw_cases_and_deaths')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "raw"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "cases_deaths.csv",
-						"folderPath": "ecdc",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "country",
-						"type": "String"
-					},
-					{
-						"name": "country_code",
-						"type": "String"
-					},
-					{
-						"name": "continent",
-						"type": "String"
-					},
-					{
-						"name": "population",
-						"type": "String"
-					},
-					{
-						"name": "indicator",
-						"type": "String"
-					},
-					{
-						"name": "daily_count",
-						"type": "String"
-					},
-					{
-						"name": "date",
-						"type": "String"
-					},
-					{
-						"name": "rate_14_day",
-						"type": "String"
-					},
-					{
-						"name": "source",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_country_lookup')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "country_lookup.csv",
-						"fileSystem": "lookup"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "country",
-						"type": "String"
-					},
-					{
-						"name": "country_code_2_digit",
-						"type": "String"
-					},
-					{
-						"name": "country_code_3_digit",
-						"type": "String"
-					},
-					{
-						"name": "continent",
-						"type": "String"
-					},
-					{
-						"name": "population",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_processed_cases_and_deaths')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "ecdc/cases_deaths",
-						"fileSystem": "processed"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_process_cases_and_deaths_data')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_transform_cases_deaths",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_transform_cases_deaths",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"CasesAndDeathsSource": {},
-									"CountryLookup": {},
-									"CasesAndDeathsSink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_transform_cases_deaths')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/df_transform_hospital_admissions')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1858,246 +2092,6 @@
 				"[concat(variables('factoryId'), '/datasets/ds_dim_date_lookup')]",
 				"[concat(variables('factoryId'), '/datasets/ds_daily_hospital_admissions')]",
 				"[concat(variables('factoryId'), '/datasets/ds_weekly_hospital_admissions')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_raw_hospital_admission')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "hospital_admissions.csv",
-						"folderPath": "ecdc",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "country",
-						"type": "String"
-					},
-					{
-						"name": "indicator",
-						"type": "String"
-					},
-					{
-						"name": "date",
-						"type": "String"
-					},
-					{
-						"name": "year_week",
-						"type": "String"
-					},
-					{
-						"name": "value",
-						"type": "String"
-					},
-					{
-						"name": "source",
-						"type": "String"
-					},
-					{
-						"name": "url",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_dim_date_lookup')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "dim_date.csv",
-						"fileSystem": "lookup"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "date_key",
-						"type": "String"
-					},
-					{
-						"name": "date",
-						"type": "String"
-					},
-					{
-						"name": "year",
-						"type": "String"
-					},
-					{
-						"name": "month",
-						"type": "String"
-					},
-					{
-						"name": "day",
-						"type": "String"
-					},
-					{
-						"name": "day_name",
-						"type": "String"
-					},
-					{
-						"name": "day_of_year",
-						"type": "String"
-					},
-					{
-						"name": "week_of_month",
-						"type": "String"
-					},
-					{
-						"name": "week_of_year",
-						"type": "String"
-					},
-					{
-						"name": "month_name",
-						"type": "String"
-					},
-					{
-						"name": "year_month",
-						"type": "String"
-					},
-					{
-						"name": "year_week",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_daily_hospital_admissions')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "ecdc/hospitaladmissions",
-						"fileSystem": "processed"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_weekly_hospital_admissions')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "ecdc/hospitaladmissions",
-						"fileSystem": "processed"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_azadlsg2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_process_hospital_admissions_data')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "df_transform_hospital_admissions",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "df_transform_hospital_admissions",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"sourceHospitalAdmission": {},
-									"sourceCountry": {},
-									"sourceDimDate": {},
-									"sinkDaily": {},
-									"sinkWeekly": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_transform_hospital_admissions')]"
 			]
 		}
 	]
