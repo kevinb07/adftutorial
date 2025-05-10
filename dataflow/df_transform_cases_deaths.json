@@ -16,7 +16,7 @@
 						"referenceName": "ds_country_lookup",
 						"type": "DatasetReference"
 					},
-					"name": "countryLookup"
+					"name": "CountryLookup"
 				}
 			],
 			"sinks": [
@@ -69,7 +69,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> countryLookup",
+				"     ignoreNoFilesFound: false) ~> CountryLookup",
 				"CasesAndDeathsSource filter(continent == \"Europe\" && not(isNull(country_code))) ~> FilterEuropeOnly",
 				"FilterEuropeOnly select(mapColumn(",
 				"          country,",
@@ -92,7 +92,7 @@
 				"     count = sum(daily_count),",
 				"     columnNaming: '$V_$N',",
 				"     lateral: true) ~> PivotCounts",
-				"PivotCounts, countryLookup lookup(PivotCounts@country == countryLookup@country,",
+				"PivotCounts, CountryLookup lookup(PivotCounts@country == CountryLookup@country,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> LookupCountry",
