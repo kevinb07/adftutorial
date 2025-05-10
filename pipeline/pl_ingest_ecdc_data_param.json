@@ -48,11 +48,15 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_ecdc_raw_csv_http",
+						"referenceName": "ds_cases_deaths_raw_csv_http_param",
 						"type": "DatasetReference",
 						"parameters": {
 							"relativeURL": {
 								"value": "@pipeline().parameters.sourceRelativeURL",
+								"type": "Expression"
+							},
+							"baseURL": {
+								"value": "@pipeline().parameters.sourceBaseURL",
 								"type": "Expression"
 							}
 						}
@@ -77,6 +81,9 @@
 				"type": "string"
 			},
 			"sinkFileName": {
+				"type": "string"
+			},
+			"sourceBaseURL": {
 				"type": "string"
 			}
 		},
