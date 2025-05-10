@@ -33,6 +33,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkDaily"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_weekly_hospital_admissions",
+						"type": "DatasetReference"
+					},
+					"name": "sinkWeekly"
 				}
 			],
 			"transformations": [
@@ -216,7 +223,17 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sinkDaily"
+				"     partitionBy('hash', 1)) ~> sinkDaily",
+				"selectWeeklySink sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['weekly_hospital_admissions.csv'],",
+				"     truncate: true,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkWeekly"
 			]
 		}
 	}
