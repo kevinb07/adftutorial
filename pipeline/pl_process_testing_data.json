@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"scriptPath": "scripts/covid_transform_testing.hql",
+					"scriptPath": "scripts/hql/covid_transform_testing.hql",
 					"scriptLinkedService": {
 						"referenceName": "ls_sablob_azadlsg2",
 						"type": "LinkedServiceReference"
