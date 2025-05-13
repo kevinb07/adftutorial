@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "azdf-kb01"
 		},
+		"ls_azkbhdi_clust01_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_azkbhdi_clust01'"
+		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
@@ -30,6 +34,10 @@
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/dc230a1b-7380-4c2d-8194-5ad18c6dc4e7/resourceGroups/adf-rg/providers/Microsoft.Storage/storageAccounts/azadlsg2"
+		},
+		"ls_azkbhdi_clust01_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
 		},
 		"containerUri": {
 			"type": "string",
@@ -84,6 +92,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_azkbhdi_clust01_password": {
+						"value": "[parameters('ls_azkbhdi_clust01_password')]"
+					},
+					"ls_azkbhdi_clust01_properties_typeProperties_userName": {
+						"value": "[parameters('ls_azkbhdi_clust01_properties_typeProperties_userName')]"
 					},
 					"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
 						"value": "[parameters('tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL')]"
