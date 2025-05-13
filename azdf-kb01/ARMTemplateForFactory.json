@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_azkbhdi_clust01'"
 		},
+		"ls_sablob_azadlsg2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sablob_azadlsg2'"
+		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
@@ -2117,7 +2121,7 @@
 						"typeProperties": {
 							"scriptPath": "scripts/hql/covid_transform_testing.hql",
 							"scriptLinkedService": {
-								"referenceName": "ls_ablob_azadlsg2",
+								"referenceName": "ls_sablob_azadlsg2",
 								"type": "LinkedServiceReference"
 							}
 						},
@@ -2134,7 +2138,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_azkbhdi_clust01')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_ablob_azadlsg2')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_sablob_azadlsg2')]"
 			]
 		},
 		{
@@ -2161,6 +2165,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_ablob_azadlsg2')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sablob_azadlsg2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_sablob_azadlsg2_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

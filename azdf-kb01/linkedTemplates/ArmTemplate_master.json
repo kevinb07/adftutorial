@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_azkbhdi_clust01'"
 		},
+		"ls_sablob_azadlsg2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sablob_azadlsg2'"
+		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
@@ -65,6 +69,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_sablob_azadlsg2_connectionString": {
+						"value": "[parameters('ls_sablob_azadlsg2_connectionString')]"
 					},
 					"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint')]"
