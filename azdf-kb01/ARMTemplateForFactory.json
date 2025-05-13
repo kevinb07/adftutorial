@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azsatempo99'"
 		},
+		"ls_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_databricks'"
+		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
@@ -22,6 +26,10 @@
 		"ls_adls_azadlsg2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.dfs.core.windows.net/"
+		},
+		"ls_azkbhdi_clust01_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"type": "string",
@@ -38,10 +46,6 @@
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/dc230a1b-7380-4c2d-8194-5ad18c6dc4e7/resourceGroups/adf-rg/providers/Microsoft.Storage/storageAccounts/azadlsg2"
-		},
-		"ls_azkbhdi_clust01_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "admin"
 		}
 	},
 	"variables": {
@@ -803,6 +807,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_process_testing_data_hdinsight')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Process Testing Data",
+						"type": "HDInsightHive",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"scriptPath": "scripts/hql/covid_transform_testing.hql",
+							"scriptLinkedService": {
+								"referenceName": "ls_azsatempo99",
+								"type": "LinkedServiceReference"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_azkbhdi_clust01",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azsatempo99')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_azkbhdi_clust01')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_test')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1199,9 +1244,7 @@
 				"linkedServiceName": {
 					"referenceName": "ls_ablob_azadlsg2",
 					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "Population"
-					}
+					"parameters": {}
 				},
 				"annotations": [],
 				"type": "Json",
@@ -1236,9 +1279,7 @@
 				"linkedServiceName": {
 					"referenceName": "ls_ablob_azadlsg2",
 					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "Population"
-					}
+					"parameters": {}
 				},
 				"annotations": [],
 				"type": "Json",
@@ -1348,9 +1389,7 @@
 				"linkedServiceName": {
 					"referenceName": "ls_ablob_azadlsg2",
 					"type": "LinkedServiceReference",
-					"parameters": {
-						"containerName": "Population"
-					}
+					"parameters": {}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1605,6 +1644,44 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('ls_adls_azadlsg2_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azkbhdi_clust01')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HDInsight",
+				"typeProperties": {
+					"clusterUri": "https://azkbhdi-clust01.azurehdinsight.net",
+					"userName": "[parameters('ls_azkbhdi_clust01_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_azkbhdi_clust01_password')]"
+					},
+					"isEspEnabled": false,
+					"linkedServiceName": {
+						"referenceName": "ls_azsatempo99",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azsatempo99')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azsatempo99')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_azsatempo99_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -2101,14 +2178,39 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_process_testing_data_hdinsight')]",
+			"name": "[concat(parameters('factoryName'), '/ls_databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2795744339559451.11.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_databricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_D4s_v3",
+					"newClusterNumOfWorker": "1",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "15.4.x-scala2.12",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_process_population_data_databricks')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Process Testing Data",
-						"type": "HDInsightHive",
+						"name": "Execute Population Transformation",
+						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2119,14 +2221,10 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"scriptPath": "scripts/hql/covid_transform_testing.hql",
-							"scriptLinkedService": {
-								"referenceName": "ls_azsatempo99",
-								"type": "LinkedServiceReference"
-							}
+							"notebookPath": "/covid/transform/transform_population_data"
 						},
 						"linkedServiceName": {
-							"referenceName": "ls_azkbhdi_clust01",
+							"referenceName": "ls_databricks",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -2137,47 +2235,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azkbhdi_clust01')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_azsatempo99')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azkbhdi_clust01')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "HDInsight",
-				"typeProperties": {
-					"clusterUri": "https://azkbhdi-clust01.azurehdinsight.net",
-					"userName": "[parameters('ls_azkbhdi_clust01_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_azkbhdi_clust01_password')]"
-					},
-					"isEspEnabled": false,
-					"linkedServiceName": {
-						"referenceName": "ls_azsatempo99",
-						"type": "LinkedServiceReference"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azsatempo99')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azsatempo99')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_azsatempo99_connectionString')]"
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

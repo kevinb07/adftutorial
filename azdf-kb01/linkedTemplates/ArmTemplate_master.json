@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azsatempo99'"
 		},
+		"ls_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_databricks'"
+		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
@@ -22,6 +26,10 @@
 		"ls_adls_azadlsg2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azadlsg2.dfs.core.windows.net/"
+		},
+		"ls_azkbhdi_clust01_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"type": "string",
@@ -38,10 +46,6 @@
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/dc230a1b-7380-4c2d-8194-5ad18c6dc4e7/resourceGroups/adf-rg/providers/Microsoft.Storage/storageAccounts/azadlsg2"
-		},
-		"ls_azkbhdi_clust01_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "admin"
 		},
 		"containerUri": {
 			"type": "string",
@@ -72,6 +76,9 @@
 					},
 					"ls_azsatempo99_connectionString": {
 						"value": "[parameters('ls_azsatempo99_connectionString')]"
+					},
+					"ls_databricks_accessToken": {
+						"value": "[parameters('ls_databricks_accessToken')]"
 					},
 					"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint')]"
