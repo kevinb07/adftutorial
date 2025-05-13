@@ -1,5 +1,5 @@
 {
-	"name": "pl_process_testing_data",
+	"name": "pl_process_testing_data_hdinsight",
 	"properties": {
 		"activities": [
 			{
