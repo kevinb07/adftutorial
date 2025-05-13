@@ -1204,7 +1204,7 @@
 						"typeProperties": {
 							"scriptPath": "scripts/hql/covid_transform_testing.hql",
 							"scriptLinkedService": {
-								"referenceName": "ls_ablob_azadlsg2",
+								"referenceName": "ls_azsatempo99",
 								"type": "LinkedServiceReference"
 							}
 						},
