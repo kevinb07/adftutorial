@@ -7,9 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "azdf-kb01"
 		},
-		"ls_sablob_azadlsg2_connectionString": {
+		"ls_azsatempo99_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_sablob_azadlsg2'"
+			"metadata": "Secure string for 'connectionString' of 'ls_azsatempo99'"
 		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
@@ -76,14 +76,14 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_sablob_azadlsg2')]",
+			"name": "[concat(parameters('factoryName'), '/ls_azsatempo99')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('ls_sablob_azadlsg2_connectionString')]"
+					"connectionString": "[parameters('ls_azsatempo99_connectionString')]"
 				}
 			},
 			"dependsOn": []

@@ -11,9 +11,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_azkbhdi_clust01'"
 		},
-		"ls_sablob_azadlsg2_connectionString": {
+		"ls_azsatempo99_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_sablob_azadlsg2'"
+			"metadata": "Secure string for 'connectionString' of 'ls_azsatempo99'"
 		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
@@ -70,8 +70,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"ls_sablob_azadlsg2_connectionString": {
-						"value": "[parameters('ls_sablob_azadlsg2_connectionString')]"
+					"ls_azsatempo99_connectionString": {
+						"value": "[parameters('ls_azsatempo99_connectionString')]"
 					},
 					"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint')]"
