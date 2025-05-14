@@ -29,6 +29,9 @@
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -54,6 +57,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -118,6 +124,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -279,6 +288,9 @@
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -304,6 +316,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_AzureSqlDatabase",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -359,6 +374,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -546,6 +564,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -656,6 +677,9 @@
 						"type": "String",
 						"defaultValue": "hospital_admissions.csv"
 					}
+				},
+				"folder": {
+					"name": "Ingest"
 				},
 				"annotations": []
 			},
@@ -807,6 +831,9 @@
 						"defaultValue": "hospital_admissions.csv"
 					}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -914,6 +941,9 @@
 						"type": "String",
 						"defaultValue": "hospital_admissions.csv"
 					}
+				},
+				"folder": {
+					"name": "Ingest"
 				},
 				"annotations": []
 			},
@@ -1114,6 +1144,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": [],
 				"lastPublishTime": "2025-05-09T19:59:19Z"
 			},
@@ -1152,6 +1185,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": []
 			},
@@ -1244,6 +1280,9 @@
 					"sourceRelativeURL": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "test"
 				},
 				"annotations": []
 			},
@@ -2016,6 +2055,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sqldb"
 				},
 				"annotations": []
 			},

@@ -65,6 +65,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -111,6 +114,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": []
 			},

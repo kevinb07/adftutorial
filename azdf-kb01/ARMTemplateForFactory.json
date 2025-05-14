@@ -137,6 +137,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -250,6 +253,9 @@
 						"type": "String",
 						"defaultValue": "hospital_admissions.csv"
 					}
+				},
+				"folder": {
+					"name": "Ingest"
 				},
 				"annotations": []
 			},
@@ -404,6 +410,9 @@
 						"defaultValue": "hospital_admissions.csv"
 					}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -515,6 +524,9 @@
 						"type": "String",
 						"defaultValue": "hospital_admissions.csv"
 					}
+				},
+				"folder": {
+					"name": "Ingest"
 				},
 				"annotations": []
 			},
@@ -718,6 +730,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Ingest"
+				},
 				"annotations": [],
 				"lastPublishTime": "2025-05-09T19:59:19Z"
 			},
@@ -766,6 +781,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": []
 			},
@@ -816,6 +834,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -851,6 +872,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": []
 			},
@@ -891,6 +915,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": []
 			},
@@ -985,6 +1012,9 @@
 						"type": "String"
 					}
 				},
+				"folder": {
+					"name": "test"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -999,6 +1029,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1035,6 +1068,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1069,6 +1105,9 @@
 					"parameters": {
 						"sourceBaseURL": "https://github.com"
 					}
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1111,6 +1150,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1140,6 +1182,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "lookup"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1218,6 +1263,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "lookup"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1372,6 +1420,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1412,6 +1463,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1443,6 +1497,9 @@
 					"type": "LinkedServiceReference",
 					"parameters": {}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1473,6 +1530,9 @@
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1502,6 +1562,9 @@
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1529,6 +1592,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1595,6 +1661,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -2648,6 +2717,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "sqldb"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -2747,6 +2819,9 @@
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -2774,6 +2849,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_AzureSqlDatabase",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -2831,6 +2909,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
