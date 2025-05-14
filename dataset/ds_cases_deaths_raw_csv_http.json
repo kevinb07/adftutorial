@@ -8,6 +8,9 @@
 				"sourceBaseURL": "https://github.com"
 			}
 		},
+		"folder": {
+			"name": "raw"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

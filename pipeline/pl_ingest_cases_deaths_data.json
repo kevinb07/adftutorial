@@ -60,6 +60,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "Ingest"
+		},
 		"annotations": []
 	}
 }

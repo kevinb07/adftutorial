@@ -100,6 +100,9 @@
 				"defaultValue": "hospital_admissions.csv"
 			}
 		},
+		"folder": {
+			"name": "Ingest"
+		},
 		"annotations": []
 	}
 }

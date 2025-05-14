@@ -381,6 +381,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "sqldb"
+		},
 		"annotations": []
 	}
 }
