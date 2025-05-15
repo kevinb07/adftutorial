@@ -3,10 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_ablob_azadlsg2",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"containerName": "Population"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Json",
