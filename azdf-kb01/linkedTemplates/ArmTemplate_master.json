@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "azdf-kb01"
 		},
+		"ls_AzureSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
+		},
 		"ls_azkbhdi_clust01_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_azkbhdi_clust01'"
@@ -19,9 +23,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'ls_databricks'"
 		},
-		"ls_AzureSqlDatabase_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
+		"ls_AzureSqlDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "azsqldbsvr01.database.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "azsqldb"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladmin"
 		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
@@ -38,18 +50,6 @@
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{linkedService().sourceBaseURL}"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "azsqldbsvr01.database.windows.net"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "azsqldb"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sqladmin"
 		},
 		"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
 			"type": "string",
@@ -90,23 +90,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_AzureSqlDatabase_password": {
+						"value": "[parameters('ls_AzureSqlDatabase_password')]"
+					},
 					"ls_azsatempo99_connectionString": {
 						"value": "[parameters('ls_azsatempo99_connectionString')]"
 					},
 					"ls_databricks_accessToken": {
 						"value": "[parameters('ls_databricks_accessToken')]"
-					},
-					"ls_AzureSqlDatabase_password": {
-						"value": "[parameters('ls_AzureSqlDatabase_password')]"
-					},
-					"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
-						"value": "[parameters('ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint')]"
-					},
-					"ls_adls_azadlsg2_properties_typeProperties_url": {
-						"value": "[parameters('ls_adls_azadlsg2_properties_typeProperties_url')]"
-					},
-					"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
-						"value": "[parameters('ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url')]"
 					},
 					"ls_AzureSqlDatabase_properties_typeProperties_server": {
 						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]"
@@ -116,6 +107,15 @@
 					},
 					"ls_AzureSqlDatabase_properties_typeProperties_userName": {
 						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]"
+					},
+					"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint')]"
+					},
+					"ls_adls_azadlsg2_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_azadlsg2_properties_typeProperties_url')]"
+					},
+					"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
+						"value": "[parameters('ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url')]"
 					}
 				}
 			},

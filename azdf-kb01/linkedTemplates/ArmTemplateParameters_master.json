@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "azdf-kb01"
 		},
+		"ls_AzureSqlDatabase_password": {
+			"value": ""
+		},
 		"ls_azkbhdi_clust01_password": {
 			"value": ""
 		},
@@ -14,8 +17,14 @@
 		"ls_databricks_accessToken": {
 			"value": ""
 		},
-		"ls_AzureSqlDatabase_password": {
-			"value": ""
+		"ls_AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "azsqldbsvr01.database.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "azsqldb"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "sqladmin"
 		},
 		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
 			"value": "https://azadlsg2.blob.core.windows.net/"
@@ -28,15 +37,6 @@
 		},
 		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
 			"value": "@{linkedService().sourceBaseURL}"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_server": {
-			"value": "azsqldbsvr01.database.windows.net"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_database": {
-			"value": "azsqldb"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
-			"value": "sqladmin"
 		},
 		"tr_ingest_hospital_admissions_data_properties_pl_ingest_ecdc_data_param_parameters_sourceRelativeURL": {
 			"value": "cloudboxacademy/covid19/blob/main/ecdc_data/hospital_admissions.csv"

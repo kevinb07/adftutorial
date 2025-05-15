@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "azdf-kb01"
 		},
+		"ls_AzureSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
+		},
 		"ls_azsatempo99_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azsatempo99'"
@@ -14,22 +18,6 @@
 		"ls_databricks_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'ls_databricks'"
-		},
-		"ls_AzureSqlDatabase_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
-		},
-		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
-			"type": "string",
-			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
-		},
-		"ls_adls_azadlsg2_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://azadlsg2.dfs.core.windows.net/"
-		},
-		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "@{linkedService().sourceBaseURL}"
 		},
 		"ls_AzureSqlDatabase_properties_typeProperties_server": {
 			"type": "string",
@@ -42,12 +30,46 @@
 		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sqladmin"
+		},
+		"ls_ablob_azadlsg2_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://azadlsg2.blob.core.windows.net/"
+		},
+		"ls_adls_azadlsg2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azadlsg2.dfs.core.windows.net/"
+		},
+		"ls_http_opendata_ecdc_europa_eu_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().sourceBaseURL}"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_AzureSqlDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_AzureSqlDatabase_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_ablob_azadlsg2')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -134,28 +156,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureSqlDatabase')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]",
-					"database": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_AzureSqlDatabase_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pl_process_population_data_databricks')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -233,8 +233,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_adls_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {}
+					"type": "LinkedServiceReference"
 				},
 				"parameters": {
 					"fileName": {
@@ -551,8 +550,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_ablob_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {}
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "Json",
@@ -667,8 +665,7 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_ablob_azadlsg2",
-					"type": "LinkedServiceReference",
-					"parameters": {}
+					"type": "LinkedServiceReference"
 				},
 				"folder": {
 					"name": "raw"
